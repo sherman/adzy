@@ -59,7 +59,6 @@ public class IntervalNode {
     }
 
     public Comparable findMedianEndpoint(List<Interval> intervals) {
-
         ConcurrentSkipListSet<Comparable> sortedSet = new ConcurrentSkipListSet<Comparable>();
 
         for (Interval interval : intervals) {

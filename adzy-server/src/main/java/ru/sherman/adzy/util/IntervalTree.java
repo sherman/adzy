@@ -37,6 +37,7 @@ public class IntervalTree<T> {
             return;
         if (null == node)
             return;
+
         //if searchInterval.contains(node.v_pt)
         //then add every interval contained in this node to the result set then search left and right for further
         //overlapping intervals
