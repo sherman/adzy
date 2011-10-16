@@ -1,4 +1,4 @@
-package ru.sherman.adzy;
+package ru.sherman.adzy.server;
 
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;

@@ -1,4 +1,4 @@
-package ru.sherman.adzy;
+package ru.sherman.adzy.server;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;

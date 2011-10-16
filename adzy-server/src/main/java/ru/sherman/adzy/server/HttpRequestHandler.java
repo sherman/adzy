@@ -1,4 +1,4 @@
-package ru.sherman.adzy;
+package ru.sherman.adzy.server;
 
 import org.apache.log4j.Logger;
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -31,6 +31,19 @@ public class HttpRequestHandler extends SimpleChannelUpstreamHandler {
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
         //log.debug("Msg received");
         HttpRequest request = this.request = (HttpRequest) e.getMessage();
+
+        /*QueryStringDecoder queryStringDecoder = new QueryStringDecoder(request.getUri());
+        Map<String, List<String>> params = queryStringDecoder.getParameters();
+        if (!params.isEmpty()) {
+            for (Entry<String, List<String>> p : params.entrySet()) {
+                String key = p.getKey();
+                List<String> vals = p.getValue();
+                for (String val : vals) {
+                    buf.append("PARAM: " + key + " = " + val + "\r\n");
+                }
+            }
+            buf.append("\r\n");
+        }*/
 
         // do work here
         ChannelBuffer content = request.getContent();
