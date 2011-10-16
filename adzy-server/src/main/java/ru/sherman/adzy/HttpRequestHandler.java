@@ -1,6 +1,7 @@
 package ru.sherman.adzy;
 
 import org.apache.log4j.Logger;
+import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.handler.codec.http.*;
@@ -28,10 +29,15 @@ public class HttpRequestHandler extends SimpleChannelUpstreamHandler {
 
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
-        log.debug("Msg received");
+        //log.debug("Msg received");
         HttpRequest request = this.request = (HttpRequest) e.getMessage();
+
         // do work here
-        out.append("\r\n");
+        ChannelBuffer content = request.getContent();
+        if (content.readable()) {
+            out.append("CONTENT: " + content.toString(CharsetUtil.UTF_8) + "\r\n");
+        }
+        writeResponse(e);
     }
 
     public void writeResponse(MessageEvent e) {
