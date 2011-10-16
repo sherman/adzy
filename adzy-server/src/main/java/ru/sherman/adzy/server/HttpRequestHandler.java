@@ -6,7 +6,13 @@ import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.handler.codec.http.*;
 import org.jboss.netty.util.CharsetUtil;
+import ru.sherman.adzy.advertisement.Banner;
+import ru.sherman.adzy.algorithm.BannerSelector;
+import ru.sherman.adzy.algorithm.WeightedUniformDistributionBasedBannerSelector;
+import ru.sherman.adzy.util.Interval;
+import ru.sherman.adzy.util.IntervalTree;
 
+import java.util.Arrays;
 import java.util.Set;
 
 import static org.jboss.netty.handler.codec.http.HttpHeaders.*;
@@ -27,23 +33,24 @@ public class HttpRequestHandler extends SimpleChannelUpstreamHandler {
     private HttpRequest request;
     private final StringBuilder out = new StringBuilder();
 
+    // FIXME: must be injected and updatable
+    private final BannerSelector bannerSelector = new WeightedUniformDistributionBasedBannerSelector(
+        new IntervalTree<Banner>(
+            Arrays.<Interval>asList(
+                new Interval(1, 100, new Banner(1, 100)),
+                new Interval(101, 200, new Banner(2, 100)),
+                new Interval(201, 500, new Banner(3, 300))
+            )
+        )
+    );
+
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
         //log.debug("Msg received");
         HttpRequest request = this.request = (HttpRequest) e.getMessage();
 
-        /*QueryStringDecoder queryStringDecoder = new QueryStringDecoder(request.getUri());
-        Map<String, List<String>> params = queryStringDecoder.getParameters();
-        if (!params.isEmpty()) {
-            for (Entry<String, List<String>> p : params.entrySet()) {
-                String key = p.getKey();
-                List<String> vals = p.getValue();
-                for (String val : vals) {
-                    buf.append("PARAM: " + key + " = " + val + "\r\n");
-                }
-            }
-            buf.append("\r\n");
-        }*/
+        Banner banner = bannerSelector.getBanner();
+        out.append("Banner id is:" + banner.getId());
 
         // do work here
         ChannelBuffer content = request.getContent();
