@@ -12,7 +12,7 @@ import java.util.Random;
 public class Randoms {
     private Randoms() {}
 
-    public Interval<Integer> getRandomInterval(Integer max) {
+    public static Interval<Integer> getRandomInterval(Integer max) {
         Random rand = new Random();
 
         int randomValue = 0;
